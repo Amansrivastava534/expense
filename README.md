@@ -2,6 +2,7 @@
 
 A private, local-first salary and expense tracker configured with your ₹60,000 monthly plan.
 
+
 ## Included
 - Expense entry and categories
 - Editable monthly budget limits
