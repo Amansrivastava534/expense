@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<meta name="description" content="Private personal salary, expense, savings and SIP tracker.">
+<link rel="manifest" href="manifest.webmanifest">
+<title>My Money Manager</title>
+<style>
+:root{--bg:#0b1220;--panel:#131e30;--panel2:#1b2940;--text:#eef4ff;--muted:#9eacc2;--line:#29384f;--green:#36c995;--blue:#69a7ff;--orange:#f5b65e;--red:#ff7777}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif}header{padding:22px 18px 16px;background:linear-gradient(135deg,#14243b,#101827);position:sticky;top:0;z-index:2;border-bottom:1px solid var(--line)}.wrap{max-width:980px;margin:auto;padding:0 14px 90px}h1{font-size:23px;margin:0 0 4px}h2{font-size:17px;margin:0 0 14px}.sub,.muted{color:var(--muted);font-size:13px}.topline{display:flex;justify-content:space-between;align-items:center;gap:12px}.month{background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:8px;border-radius:10px}.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px}.metric{font-size:22px;font-weight:750;margin-top:5px}.green{color:var(--green)}.blue{color:var(--blue)}.orange{color:var(--orange)}.red{color:var(--red)}.panel{margin:12px 0}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}.field label{font-size:12px;color:var(--muted)}input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:#0e1828;color:var(--text);font:inherit}button{border:0;border-radius:10px;padding:11px 14px;background:var(--green);color:#07150f;font-weight:700;cursor:pointer}button.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}button.danger{background:#542b35;color:#ffdce0}.actions{display:flex;gap:8px;flex-wrap:wrap}.tabs{display:flex;gap:7px;overflow:auto;padding:8px 0 2px}.tab{white-space:nowrap;background:var(--panel2);color:var(--muted);border:1px solid var(--line);padding:9px 12px}.tab.active{background:#214b47;color:#dffff3;border-color:#287b67}.bar{height:9px;background:#26364c;border-radius:20px;overflow:hidden}.bar>i{display:block;height:100%;background:var(--green);border-radius:20px}.row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}.small{font-size:12px;color:var(--muted)}.hidden{display:none!important}.pill{font-size:11px;padding:4px 8px;border-radius:20px;background:#26364c;color:var(--muted)}.list{margin-top:8px}.empty{color:var(--muted);text-align:center;padding:22px 8px}.notice{font-size:12px;color:var(--muted);line-height:1.5}.bottom{position:fixed;bottom:0;left:0;right:0;background:#101a2aee;border-top:1px solid var(--line);padding:9px max(12px,env(safe-area-inset-right)) calc(9px + env(safe-area-inset-bottom));display:flex;justify-content:center;z-index:3}.bottom .inner{display:flex;gap:8px;max-width:980px;width:100%;overflow:auto}.bottom button{flex:1;min-width:68px;padding:9px 5px;font-size:12px}.chart{display:flex;gap:3px;height:13px;border-radius:20px;overflow:hidden;background:#26364c}.chart span{height:100%}@media(min-width:700px){.cards{grid-template-columns:repeat(4,1fr)}.layout{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}.wrap{padding-top:8px}}
+</style>
+</head>
+<body>
+<header><div class="wrap" style="padding-bottom:0"><div class="topline"><div><h1>My Money Manager</h1><div class="sub">Your salary, expenses & wealth tracker · private on this device</div></div><input class="month" id="monthPick" type="month" aria-label="Select month"></div></div></header>
+<main class="wrap">
+<div class="cards">
+ <div class="card"><div class="muted">Monthly income</div><div class="metric" id="incomeMetric">₹60,000</div></div>
+ <div class="card"><div class="muted">Actual expenses</div><div class="metric orange" id="expenseMetric">₹0</div></div>
+ <div class="card"><div class="muted">Saved this month</div><div class="metric green" id="savedMetric">₹0</div></div>
+ <div class="card"><div class="muted">Unallocated / missed</div><div class="metric blue" id="missedMetric">₹60,000</div></div>
+</div>
+<div class="tabs">
+ <button class="tab active" data-tab="overview">Overview</button><button class="tab" data-tab="expenses">Expenses</button><button class="tab" data-tab="budget">Budget</button><button class="tab" data-tab="goals">Savings & SIP</button><button class="tab" data-tab="history">History & backup</button>
+</div>
+<section id="overview" class="view">
+ <div class="layout">
+  <div class="panel"><h2>Monthly money snapshot</h2><div class="row"><span>Income</span><b id="ovIncome">₹60,000</b></div><div class="row"><span>Expenses recorded</span><b id="ovExpenses">₹0</b></div><div class="row"><span>Investments / SIP paid</span><b id="ovInvest">₹0</b></div><div class="row"><span>Cash savings added</span><b id="ovCash">₹0</b></div><div class="row"><span>Actual unallocated</span><b class="blue" id="ovLeft">₹60,000</b></div><p class="notice">“Saved this month” = income minus recorded expenses and SIP/investment contributions. Cash savings are tracked separately so they are not counted twice.</p></div>
+  <div class="panel"><h2>Planned monthly budget</h2><div id="budgetSummary"></div><div class="row"><span>Planned savings + SIP + buffer</span><b>₹23,000</b></div><div class="notice">Your starting plan: ₹37,000 expenses, ₹12,000 emergency fund, ₹5,000 SIP, ₹3,000 short-term savings and ₹3,000 buffer.</div></div>
+ </div>
+ <div class="panel"><h2>Quick add expense</h2><div class="grid2"><div class="field"><label>Amount (₹)</label><input id="quickAmount" type="number" min="1" placeholder="e.g. 250"></div><div class="field"><label>Category</label><select id="quickCategory"></select></div></div><div class="field"><label>Description (optional)</label><input id="quickNote" placeholder="e.g. lunch, metro, groceries"></div><button id="quickAdd">Add expense</button></div>
+</section>
+<section id="expenses" class="view hidden">
+ <div class="panel"><h2>Record an expense</h2><div class="grid2"><div class="field"><label>Amount (₹)</label><input id="expAmount" type="number" min="1" placeholder="500"></div><div class="field"><label>Date</label><input id="expDate" type="date"></div></div><div class="grid2"><div class="field"><label>Category</label><select id="expCategory"></select></div><div class="field"><label>Payment method</label><select id="payment"><option>UPI</option><option>Cash</option><option>Card</option><option>Bank transfer</option><option>Other</option></select></div></div><div class="field"><label>Description</label><input id="expNote" placeholder="What did you spend on?"></div><button id="addExpense">Save expense</button></div>
+ <div class="panel"><h2>Recorded expenses</h2><div id="expenseList" class="list"></div></div>
+</section>
+<section id="budget" class="view hidden">
+ <div class="panel"><h2>Monthly budget limits</h2><div class="notice">Edit category limits to match your real life. The initial limits use the budget you provided.</div><div id="budgetEditor"></div><button id="saveBudget">Save budget limits</button></div>
+ <div class="panel"><h2>Budget vs actual</h2><div id="budgetActual"></div></div>
+</section>
+<section id="goals" class="view hidden">
+ <div class="panel"><h2>Record savings or investment</h2><div class="grid2"><div class="field"><label>Amount (₹)</label><input id="savingAmount" type="number" min="1" placeholder="5000"></div><div class="field"><label>Date</label><input id="savingDate" type="date"></div></div><div class="grid2"><div class="field"><label>Type</label><select id="savingType"><option value="emergency">Emergency fund</option><option value="sip">Mutual fund SIP</option><option value="short">Short-term savings</option><option value="other">Other investment / savings</option></select></div><div class="field"><label>Note</label><input id="savingNote" placeholder="e.g. Nifty 50 SIP"></div></div><button id="addSaving">Record contribution</button></div>
+ <div class="grid2"><div class="panel"><h2>Emergency fund</h2><div class="metric green" id="emergencyTotal">₹0</div><div class="small">Target: ₹2,16,000</div><div class="bar"><i id="emergencyBar" style="width:0%"></i></div><div class="small" id="emergencyPct">0% complete</div></div><div class="panel"><h2>Mutual fund SIPs</h2><div class="metric blue" id="sipTotal">₹0</div><div class="small">Monthly target: ₹5,000</div><div id="sipSplit" class="small" style="margin-top:8px">Nifty 50: ₹3,000 · Flexi Cap: ₹2,000</div></div></div>
+ <div class="panel"><h2>Contributions this month</h2><div id="savingList"></div></div>
+</section>
+<section id="history" class="view hidden">
+ <div class="panel"><h2>Monthly history</h2><div id="historyList"></div></div>
+ <div class="panel"><h2>Backup & restore</h2><p class="notice">Your data stays in this browser on this device. Export a backup regularly, especially before clearing browser data or changing phones.</p><div class="actions"><button id="exportData">Export backup</button><label class="secondary" style="padding:11px 14px;border-radius:10px;cursor:pointer"><input id="importFile" type="file" accept="application/json" style="display:none">Import backup</label><button class="secondary" id="csvExport">Export expenses CSV</button></div></div>
+ <div class="panel"><h2>Data controls</h2><p class="notice">Resetting removes all locally stored records from this app on this browser.</p><button class="danger" id="resetData">Reset all app data</button></div>
+</section>
+</main>
+<nav class="bottom"><div class="inner"><button class="secondary" data-go="overview">Home</button><button class="secondary" data-go="expenses">Expenses</button><button class="secondary" data-go="budget">Budget</button><button class="secondary" data-go="goals">Savings</button><button class="secondary" data-go="history">History</button></div></nav>
+<script>
+const KEY='myMoneyManager_v1';
+const defaults={income:60000,budget:{Rent:10000,Family:15000,EMI:5000,Food:5000,Travel:1000,Other:1000},expenses:[],savings:[]};
+let data=load(), selectedMonth=new Date().toISOString().slice(0,7);
+function load(){try{return {...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){return structuredClone(defaults)}}
+function persist(){localStorage.setItem(KEY,JSON.stringify(data));render()}
+function money(n){return '₹'+Math.round(Number(n)||0).toLocaleString('en-IN')}
+function monthOf(s){return (s||'').slice(0,7)}
+function currentExpenses(){return data.expenses.filter(x=>monthOf(x.date)===selectedMonth)}
+function currentSavings(){return data.savings.filter(x=>monthOf(x.date)===selectedMonth)}
+function sum(a){return a.reduce((t,x)=>t+(+x.amount||0),0)}
+function options(){return ['Rent','Family','EMI','Food','Travel','Other','Medical','Shopping','Entertainment','Bills','Education','Miscellaneous']}
+function fillCats(){['quickCategory','expCategory'].forEach(id=>{document.getElementById(id).innerHTML=options().map(x=>`<option>${x}</option>`).join('')})}
+function setTab(tab){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('hidden',x.id!==tab));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));}
+document.querySelectorAll('[data-tab],[data-go]').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab||b.dataset.go)));
+document.getElementById('monthPick').value=selectedMonth;
+document.getElementById('monthPick').addEventListener('change',e=>{selectedMonth=e.target.value||new Date().toISOString().slice(0,7);render()});
+document.getElementById('expDate').value=new Date().toISOString().slice(0,10);document.getElementById('savingDate').value=new Date().toISOString().slice(0,10);
+fillCats();
+function addExpense(amount,category,date,note,payment){if(!amount||amount<=0)return alert('Enter a valid amount');data.expenses.push({id:Date.now()+Math.random(),amount:+amount,category,date,note,payment});persist()}
+document.getElementById('quickAdd').onclick=()=>{addExpense(document.getElementById('quickAmount').value,document.getElementById('quickCategory').value,new Date().toISOString().slice(0,10),document.getElementById('quickNote').value,'');['quickAmount','quickNote'].forEach(x=>document.getElementById(x).value='')};
+document.getElementById('addExpense').onclick=()=>{addExpense(document.getElementById('expAmount').value,document.getElementById('expCategory').value,document.getElementById('expDate').value,document.getElementById('expNote').value,document.getElementById('payment').value);document.getElementById('expAmount').value='';document.getElementById('expNote').value=''};
+document.getElementById('addSaving').onclick=()=>{let amount=+document.getElementById('savingAmount').value;if(amount<=0)return alert('Enter a valid amount');data.savings.push({id:Date.now()+Math.random(),amount,type:document.getElementById('savingType').value,date:document.getElementById('savingDate').value,note:document.getElementById('savingNote').value});persist();document.getElementById('savingAmount').value='';document.getElementById('savingNote').value=''};
+function removeItem(type,id){if(confirm('Delete this record?')){data[type]=data[type].filter(x=>x.id!==id);persist()}}
+function render(){
+ const ex=currentExpenses(), sv=currentSavings(), expenses=sum(ex), invest=sum(sv), saved=data.income-expenses-invest, left=data.income-expenses-invest;
+ document.getElementById('incomeMetric').textContent=money(data.income);document.getElementById('expenseMetric').textContent=money(expenses);document.getElementById('savedMetric').textContent=money(saved);document.getElementById('missedMetric').textContent=money(left);
+ document.getElementById('ovIncome').textContent=money(data.income);document.getElementById('ovExpenses').textContent=money(expenses);document.getElementById('ovInvest').textContent=money(invest);document.getElementById('ovCash').textContent=money(sum(sv.filter(x=>x.type!=='sip')));document.getElementById('ovLeft').textContent=money(left);
+ const byCat={};ex.forEach(x=>byCat[x.category]=(byCat[x.category]||0)+x.amount);
+ document.getElementById('budgetSummary').innerHTML=Object.entries(data.budget).map(([k,v])=>`<div class="row"><span>${k}</span><b>${money(byCat[k]||0)} / ${money(v)}</b></div>`).join('');
+ document.getElementById('expenseList').innerHTML=ex.length?ex.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(x=>`<div class="row"><div><b>${esc(x.category)} · ${money(x.amount)}</b><div class="small">${esc(x.date)} ${x.note?'· '+esc(x.note):''} ${x.payment?'· '+esc(x.payment):''}</div></div><button class="danger" data-del-exp="${x.id}">×</button></div>`).join(''):'<div class="empty">No expenses recorded for this month yet.</div>';
+ document.querySelectorAll('[data-del-exp]').forEach(b=>b.onclick=()=>removeItem('expenses',+b.dataset.delExp));
+ document.getElementById('budgetEditor').innerHTML=Object.entries(data.budget).map(([k,v])=>`<div class="field"><label>${k} limit (₹)</label><input type="number" min="0" data-budget="${k}" value="${v}"></div>`).join('');
+ document.getElementById('budgetActual').innerHTML=Object.entries(data.budget).map(([k,v])=>{let a=byCat[k]||0,p=v?Math.min(100,a/v*100):0;return `<div style="margin:13px 0"><div class="row"><span>${k}</span><b class="${a>v?'red':''}">${money(a)} / ${money(v)}</b></div><div class="bar"><i style="width:${p}%;background:${a>v?'var(--red)':'var(--green)'}"></i></div></div>`}).join('');
+ document.getElementById('saveBudget').onclick=()=>{document.querySelectorAll('[data-budget]').forEach(i=>data.budget[i.dataset.budget]=Math.max(0,+i.value||0));persist()};
+ let emergency=sum(data.savings.filter(x=>x.type==='emergency'));let sip=sum(sv.filter(x=>x.type==='sip'));document.getElementById('emergencyTotal').textContent=money(emergency);document.getElementById('emergencyBar').style.width=Math.min(100,emergency/216000*100)+'%';document.getElementById('emergencyPct').textContent=Math.min(100,Math.round(emergency/216000*100))+'% of ₹2,16,000 target (all-time)';document.getElementById('sipTotal').textContent=money(sip);
+ document.getElementById('savingList').innerHTML=sv.length?sv.map(x=>`<div class="row"><div><b>${money(x.amount)} · ${esc(x.type)}</b><div class="small">${esc(x.date)} ${x.note?'· '+esc(x.note):''}</div></div><button class="danger" data-del-sav="${x.id}">×</button></div>`).join(''):'<div class="empty">No savings or SIP contributions recorded this month.</div>';
+ document.querySelectorAll('[data-del-sav]').forEach(b=>b.onclick=()=>removeItem('savings',+b.dataset.delSav));
+ let months=[...new Set([...data.expenses.map(x=>monthOf(x.date)),...data.savings.map(x=>monthOf(x.date))])].filter(Boolean).sort().reverse();
+ document.getElementById('historyList').innerHTML=months.length?months.map(m=>{let ee=sum(data.expenses.filter(x=>monthOf(x.date)===m)),ss=sum(data.savings.filter(x=>monthOf(x.date)===m));return `<div class="row"><div><b>${m}</b><div class="small">Expenses ${money(ee)} · Savings/investments ${money(ss)}</div></div><b class="green">${money(data.income-ee-ss)} left</b></div>`}).join(''):'<div class="empty">Your monthly history will appear here as you add records.</div>';
+}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+document.getElementById('exportData').onclick=()=>download('money-manager-backup.json',JSON.stringify(data,null,2),'application/json');
+document.getElementById('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.expenses)||!Array.isArray(d.savings)||!d.budget)throw Error();if(confirm('Replace current app data with this backup?')){data=d;persist();alert('Backup restored.')}}catch(err){alert('This backup file is not valid.')}e.target.value=''};
+document.getElementById('csvExport').onclick=()=>{let rows=[['Date','Category','Amount','Description','Payment'],...data.expenses.map(x=>[x.date,x.category,x.amount,x.note,x.payment])];download('expenses.csv',rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv')};
+function download(name,content,type){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([content],{type}));a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
+document.getElementById('resetData').onclick=()=>{if(confirm('Permanently erase all expenses, savings and settings from this browser?')){data=structuredClone(defaults);persist()}}
+if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+render();
+</script>
+</body></html>
